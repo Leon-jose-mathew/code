@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "816601815157",
+    "project_id": "aquatech01234",
+    "storage_bucket": "aquatech01234.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:816601815157:android:e1a4f8b57a639148f0803c",
+        "android_client_info": {
+          "package_name": "com.example.demo1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9odwLVX8f6W3A8_zBn0hXrMrqgntb1EE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
