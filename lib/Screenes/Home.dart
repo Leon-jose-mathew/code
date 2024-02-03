@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'profile.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() {
   runApp(MyApp());
@@ -87,21 +90,43 @@ class _HomePageState extends State<HomePage> {
 }
 
 class Home extends StatelessWidget {
-  Future<void> _openGallery() async {
+  Future<void> _openGallery(BuildContext context) async {
     final picker = ImagePicker();
     final pickedImage = await picker.pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
-      // Do something with the picked image (e.g., display it)
-      print('Image picked from gallery: ${pickedImage.path}');
+      _uploadImage(context, File(pickedImage.path));
     }
   }
 
-  Future<void> _openCamera() async {
+  Future<void> _openCamera(BuildContext context) async {
     final picker = ImagePicker();
     final pickedImage = await picker.pickImage(source: ImageSource.camera);
     if (pickedImage != null) {
-      // Do something with the picked image (e.g., display it)
-      print('Image captured from camera: ${pickedImage.path}');
+      _uploadImage(context, File(pickedImage.path));
+    }
+  }
+
+  Future<void> _uploadImage(BuildContext context, File image) async {
+    try {
+      FirebaseStorage storage = FirebaseStorage.instance;
+      Reference ref = storage.ref().child("images/${DateTime.now().toString()}");
+      UploadTask uploadTask = ref.putFile(image);
+      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+      String imageURL = await taskSnapshot.ref.getDownloadURL();
+      
+      // Get the current user's ID
+      final currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser != null) {
+        String userId = currentUser.uid;
+        await FirebaseFirestore.instance.collection('users').doc(userId).update({
+          'imageURL': imageURL,
+        });
+        print('Image uploaded to Firebase Storage: $imageURL');
+      } else {
+        print('User is not authenticated.');
+      }
+    } catch (e) {
+      print('Error uploading image: $e');
     }
   }
 
@@ -125,13 +150,13 @@ class Home extends StatelessWidget {
             _buildButton(
               'Upload from Gallery',
               'assets/gallery.png',
-              _openGallery,
+              () => _openGallery(context),
             ),
             SizedBox(height: 20),
             _buildButton(
               'Capture the Image',
               'assets/camera.png',
-              _openCamera,
+              () => _openCamera(context),
             ),
           ],
         ),
@@ -175,7 +200,7 @@ class Home extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: const Color.fromARGB(255, 6, 6, 6),
               ),
             ),
           ],
