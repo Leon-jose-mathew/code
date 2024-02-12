@@ -66,7 +66,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '816601815157',
     projectId: 'aquatech01234',
     storageBucket: 'aquatech01234.appspot.com',
-    iosBundleId: 'com.example.demo1',
+    iosBundleId: 'com.example.AquaTech',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -75,6 +75,6 @@ class DefaultFirebaseOptions {
     messagingSenderId: '816601815157',
     projectId: 'aquatech01234',
     storageBucket: 'aquatech01234.appspot.com',
-    iosBundleId: 'com.example.demo1.RunnerTests',
+    iosBundleId: 'com.example.AquaTech.RunnerTests',
   );
 }

@@ -1,8 +1,8 @@
-import 'package:code/Screenes/Home.dart';
+import 'package:AquaTech/Screenes/Home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:code/Screenes/Login.dart';
+import 'package:AquaTech/Screenes/Login.dart';
 import 'firebase_options.dart';
 
 void main() async {

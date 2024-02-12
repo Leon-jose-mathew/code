@@ -1,4 +1,4 @@
-package com.example.demo1
+package com.example.AquaTech
 
 import io.flutter.embedding.android.FlutterActivity
 

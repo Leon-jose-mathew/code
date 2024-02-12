@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.demo1</string>
+	<string>com.example.AquaTech</string>
 	<key>PROJECT_ID</key>
 	<string>aquatech01234</string>
 	<key>STORAGE_BUCKET</key>
