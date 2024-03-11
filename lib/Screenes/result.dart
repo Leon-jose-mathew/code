@@ -1,37 +1,42 @@
 
-
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 class ResultPage extends StatelessWidget {
+  final String label;
   final String imagePath;
 
-  ResultPage({required this.imagePath});
+  const ResultPage({Key? key, required this.label, required this.imagePath}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Result Page'),
+        title: Text('Result'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Your Picked Image:',
-              style: TextStyle(fontSize: 20),
-            ),
-            SizedBox(height: 20),
             Image.file(
               File(imagePath),
               width: 200,
               height: 200,
             ),
+            SizedBox(height: 20),
+            label.isNotEmpty
+                ? Text(
+                    'Label: $label',
+                    style: TextStyle(fontSize: 24),
+                  )
+                : Text(
+                    'No result found for this image.',
+                    style: TextStyle(fontSize: 24),
+                  ),
           ],
         ),
       ),
     );
   }
 }
+

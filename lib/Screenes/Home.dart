@@ -3,6 +3,7 @@ import 'profile.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'result.dart';
+import 'package:flutter_tflite/flutter_tflite.dart'; // Add TensorFlow Lite package
 
 void main() {
   runApp(MyApp());
@@ -38,7 +39,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Color.fromARGB(255, 0, 0, 0),
       body: _pages[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
@@ -47,39 +48,15 @@ class _HomePageState extends State<HomePage> {
             _currentIndex = index;
           });
         },
-        selectedItemColor: Color.fromARGB(255, 1, 58, 1), // Highlight color
+        selectedItemColor: Color.fromARGB(255, 34, 158, 34), // Highlight color
         items: [
           BottomNavigationBarItem(
-            icon: Container(
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: _currentIndex == 0 ? Color.fromARGB(255, 51, 78, 48) : null,
-              ),
-              child: Image.asset(
-                'assets/home.png',
-                width: 30,
-                height: 30,
-                color: _currentIndex == 0 ? Colors.white : null,
-              ),
-            ),
-            label: '',
+            icon: Icon(Icons.home),
+            label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Container(
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: _currentIndex == 1 ? Color.fromARGB(255, 51, 78, 48) : null,
-              ),
-              child: Image.asset(
-                'assets/user.png',
-                width: 30,
-                height: 30,
-                color: _currentIndex == 1 ? Colors.white : null,
-              ),
-            ),
-            label: '',
+            icon: Icon(Icons.person),
+            label: 'Profile',
           ),
         ],
       ),
@@ -93,12 +70,7 @@ class Home extends StatelessWidget {
     final pickedImage = await picker.pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
       // Navigate to ResultPage with the picked image path
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ResultPage(imagePath: pickedImage.path),
-        ),
-      );
+      _runModel(context, File(pickedImage.path));
     }
   }
 
@@ -107,19 +79,47 @@ class Home extends StatelessWidget {
     final pickedImage = await picker.pickImage(source: ImageSource.camera);
     if (pickedImage != null) {
       // Navigate to ResultPage with the picked image path
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ResultPage(imagePath: pickedImage.path),
-        ),
-      );
+      _runModel(context, File(pickedImage.path));
     }
+  }
+
+  Future<void> _runModel(BuildContext context, File imageFile) async {
+    await Tflite.loadModel(
+      model: "assets/model_unquant.tflite",
+      labels: "assets/labels.txt",
+      isAsset: true,
+      numThreads: 1,
+      useGpuDelegate: false,
+    );
+
+    final output = await Tflite.runModelOnImage(
+      path: imageFile.path,
+      numResults: 1,
+      threshold: 0.5,
+      imageMean: 127.5,
+      imageStd: 127.5,
+    );
+
+    String label = ''; // Initialize label as empty
+
+    if (output != null && output.isNotEmpty) {
+      label = output[0]['label']; // Get the label if result is found
+    }
+    // Navigate to ResultPage with the inference result
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ResultPage(
+            label: label = label, imagePath: imageFile.path),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 20.0), // Adjust the top padding as needed
+      padding:
+          const EdgeInsets.only(top: 20.0), // Adjust the top padding as needed
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -129,14 +129,14 @@ class Home extends StatelessWidget {
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 222, 222, 222),
+                color: Color.fromARGB(255, 255, 255, 255),
               ),
             ),
             SizedBox(height: 40),
             _buildButton(
               'Upload from Gallery',
               'assets/gallery.png',
-               () => _openGallery(context),
+              () => _openGallery(context),
             ),
             SizedBox(height: 20),
             _buildButton(
@@ -163,7 +163,7 @@ class Home extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Color.fromARGB(255, 24, 61, 17).withOpacity(0.5),
+            color: Color.fromARGB(255, 162, 191, 154).withOpacity(0.5),
             spreadRadius: 4,
             blurRadius: 5,
             offset: Offset(0, 3),
@@ -186,7 +186,7 @@ class Home extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: const Color.fromARGB(255, 0, 0, 0),
               ),
             ),
           ],

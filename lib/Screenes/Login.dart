@@ -128,7 +128,8 @@ class SignInPage extends StatelessWidget {
                         _signIn(context); // Attempt to sign in
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.transparent, // Make button transparent
+                        //primary: Colors.transparent, // Make button transparent
+                        backgroundColor: Colors.transparent, // Make button transparent
                         shadowColor: Colors.transparent, // Remove button shadow
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25),

@@ -1,3 +1,4 @@
+import 'package:AquaTech/Screenes/history.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -57,6 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
+                  textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 16.0),
                 Container(
@@ -100,10 +102,11 @@ class _ProfilePageState extends State<ProfilePage> {
                       TextButton(
                         onPressed: () {
                           // Handle My Watering History button tap
+                          _handleWateringHistoryTap(context);
                         },
                         child: Text(
                           'My Watering History',
-                          style: TextStyle(color: Colors.black, fontSize: 16.0),
+                          style: TextStyle(color: Colors.black, fontSize: 16.0, decoration: TextDecoration.underline),
                         ),
                       ),
                       SizedBox(height: 8.0),
@@ -116,7 +119,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           style: TextStyle(color: Colors.black, fontSize: 16.0),
                         ),
                       ),
-                    ],
+                      ],
                   ),
                 ),
                 SizedBox(height: 16.0),
@@ -166,6 +169,13 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
+    );
+  }
+
+  void _handleWateringHistoryTap(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => HistoryPage()),
     );
   }
 
