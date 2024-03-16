@@ -1,2 +1,6 @@
- 0-15
- 16-30
+ 0-15 days healthy, 200ml required
+ 0-15 days unhealthy, 230ml required
+ 16-30 days healthy, 250ml required
+ 16-30 days unhealthy, 300ml required
+ 31+ days healthy, 400ml required
+ 31+ days unhealthy, 450ml required
