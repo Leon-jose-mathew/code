@@ -1,8 +1,8 @@
-import 'package:AquaTech/Screenes/history.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'login.dart'; // Import the Login.dart file
+import 'history.dart'; // Import the History.dart file
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -61,113 +61,110 @@ class _ProfilePageState extends State<ProfilePage> {
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 16.0),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  padding: EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Hello, $_userName!',
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                      SizedBox(height: 6.0),
-                      Text(
-                        'Email: $_userEmail',
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
+                _buildProfileCard(
+                  'Hello, $_userName!',
+                  'Email: $_userEmail',
+                  Icons.account_circle,
                 ),
                 SizedBox(height: 16.0),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  padding: EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TextButton(
-                        onPressed: () {
-                          // Handle My Watering History button tap
-                          _handleWateringHistoryTap(context);
-                        },
-                        child: Text(
-                          'My Watering History',
-                          style: TextStyle(color: Colors.black, fontSize: 16.0, decoration: TextDecoration.underline),
-                        ),
-                      ),
-                      SizedBox(height: 8.0),
-                      TextButton(
-                        onPressed: () {
-                          _confirmLogout(context);
-                        },
-                        child: Text(
-                          'Log out',
-                          style: TextStyle(color: Colors.black, fontSize: 16.0),
-                        ),
-                      ),
-                      ],
-                  ),
+                _buildActionCard(
+                  'My Watering History',
+                  Icons.history,
+                  _handleWateringHistoryTap,
                 ),
                 SizedBox(height: 16.0),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  padding: EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'More',
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                      SizedBox(height: 16.0),
-                      TextButton(
-                        onPressed: () {
-                          // Handle Help & Support button tap
-                        },
-                        child: Text(
-                          'Help & Support',
-                          style: TextStyle(color: Colors.black, fontSize: 16.0),
-                        ),
-                      ),
-                      SizedBox(height: 8.0),
-                      TextButton(
-                        onPressed: () {
-                          // Handle About App button tap
-                        },
-                        child: Text(
-                          'About App',
-                          style: TextStyle(color: Colors.black, fontSize: 16.0),
-                        ),
-                      ),
-                      SizedBox(height: 8.0),
-                    ],
-                  ),
+                _buildActionCard(
+                  'Log out',
+                  Icons.logout,
+                  _confirmLogout,
+                ),
+                SizedBox(height: 16.0),
+                _buildActionCard(
+                  'Help & Support',
+                  Icons.help,
+                  () {
+                    // Handle Help & Support button tap
+                  },
+                ),
+                SizedBox(height: 16.0),
+                _buildActionCard(
+                  'About App',
+                  Icons.info,
+                  () {
+                    // Handle About App button tap
+                  },
                 ),
               ],
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildProfileCard(String title, String subtitle, IconData icon) {
+    return Card(
+      color: Colors.grey[800],
+      child: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  icon,
+                  color: Colors.white,
+                ),
+                SizedBox(width: 8.0),
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 6.0),
+            Text(
+              subtitle,
+              style: TextStyle(
+                fontSize: 16.0,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildActionCard(String title, IconData icon, Function onPressed) {
+    return Card(
+      color: Colors.grey[800],
+      child: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: TextButton(
+          onPressed: () => onPressed(context),
+          child: Row(
+            children: [
+              Icon(
+                icon,
+                color: Colors.white,
+              ),
+              SizedBox(width: 8.0),
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 16.0,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
