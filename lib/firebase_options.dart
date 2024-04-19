@@ -44,37 +44,41 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAtgye9Pq_gzD6Csad7b1adjcnDQY4OXxw',
-    appId: '1:816601815157:web:47a9766eda1efbe7f0803c',
-    messagingSenderId: '816601815157',
-    projectId: 'aquatech01234',
-    authDomain: 'aquatech01234.firebaseapp.com',
-    storageBucket: 'aquatech01234.appspot.com',
-  );
+      apiKey: 'AIzaSyAtgye9Pq_gzD6Csad7b1adjcnDQY4OXxw',
+      appId: '1:816601815157:web:47a9766eda1efbe7f0803c',
+      messagingSenderId: '816601815157',
+      projectId: 'aquatech01234',
+      authDomain: 'aquatech01234.firebaseapp.com',
+      storageBucket: 'aquatech01234.appspot.com',
+      databaseURL:
+          'https://aquatech01234-default-rtdb.asia-southeast1.firebasedatabase.app');
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyD9odwLVX8f6W3A8_zBn0hXrMrqgntb1EE',
-    appId: '1:816601815157:android:e1a4f8b57a639148f0803c',
-    messagingSenderId: '816601815157',
-    projectId: 'aquatech01234',
-    storageBucket: 'aquatech01234.appspot.com',
-  );
+      apiKey: 'AIzaSyD9odwLVX8f6W3A8_zBn0hXrMrqgntb1EE',
+      appId: '1:816601815157:android:e1a4f8b57a639148f0803c',
+      messagingSenderId: '816601815157',
+      projectId: 'aquatech01234',
+      storageBucket: 'aquatech01234.appspot.com',
+      databaseURL:
+          'https://aquatech01234-default-rtdb.asia-southeast1.firebasedatabase.app');
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyA3Z_fIGn7nv5xCxBZ_QAu1YWi6VN1UXc0',
-    appId: '1:816601815157:ios:1d9ecbf045c4f0aaf0803c',
-    messagingSenderId: '816601815157',
-    projectId: 'aquatech01234',
-    storageBucket: 'aquatech01234.appspot.com',
-    iosBundleId: 'com.example.AquaTech',
-  );
+      apiKey: 'AIzaSyA3Z_fIGn7nv5xCxBZ_QAu1YWi6VN1UXc0',
+      appId: '1:816601815157:ios:1d9ecbf045c4f0aaf0803c',
+      messagingSenderId: '816601815157',
+      projectId: 'aquatech01234',
+      storageBucket: 'aquatech01234.appspot.com',
+      iosBundleId: 'com.example.AquaTech',
+      databaseURL:
+          'https://aquatech01234-default-rtdb.asia-southeast1.firebasedatabase.app');
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyA3Z_fIGn7nv5xCxBZ_QAu1YWi6VN1UXc0',
-    appId: '1:816601815157:ios:1633037fd2b2fc06f0803c',
-    messagingSenderId: '816601815157',
-    projectId: 'aquatech01234',
-    storageBucket: 'aquatech01234.appspot.com',
-    iosBundleId: 'com.example.AquaTech.RunnerTests',
-  );
+      apiKey: 'AIzaSyA3Z_fIGn7nv5xCxBZ_QAu1YWi6VN1UXc0',
+      appId: '1:816601815157:ios:1633037fd2b2fc06f0803c',
+      messagingSenderId: '816601815157',
+      projectId: 'aquatech01234',
+      storageBucket: 'aquatech01234.appspot.com',
+      iosBundleId: 'com.example.AquaTech.RunnerTests',
+      databaseURL:
+          'https://aquatech01234-default-rtdb.asia-southeast1.firebasedatabase.app');
 }

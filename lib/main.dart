@@ -21,8 +21,8 @@ class MyApp extends StatelessWidget {
       title: 'AquaTech',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        // Define your app's theme here
-      ),
+          // Define your app's theme here
+          ),
       home: SplashScreen(), // Set SplashScreen as the home page
     );
   }
@@ -91,7 +91,8 @@ class _LogoTextAnimationState extends State<LogoTextAnimation>
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector( // GestureDetector to handle navigation on touch
+    return GestureDetector(
+      // GestureDetector to handle navigation on touch
       onTap: () {
         Navigator.pushReplacement(
           context,

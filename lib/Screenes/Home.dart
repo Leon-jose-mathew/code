@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
-import 'profile.dart';
-import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:flutter_tflite/flutter_tflite.dart';
 import 'result.dart';
-import 'package:flutter_tflite/flutter_tflite.dart'; // Add TensorFlow Lite package
+import 'profile.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -39,7 +43,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 0, 0, 0),
+      backgroundColor: const Color.fromARGB(255, 0, 0, 0),
       body: _pages[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
@@ -48,13 +52,13 @@ class _HomePageState extends State<HomePage> {
             _currentIndex = index;
           });
         },
-        selectedItemColor: Color.fromARGB(255, 34, 158, 34), // Highlight color
+        selectedItemColor: const Color.fromARGB(255, 34, 158, 34),
         items: [
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Profile',
           ),
@@ -69,7 +73,6 @@ class Home extends StatelessWidget {
     final picker = ImagePicker();
     final pickedImage = await picker.pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
-      // Navigate to ResultPage with the picked image path
       _runModel(context, File(pickedImage.path));
     }
   }
@@ -78,7 +81,6 @@ class Home extends StatelessWidget {
     final picker = ImagePicker();
     final pickedImage = await picker.pickImage(source: ImageSource.camera);
     if (pickedImage != null) {
-      // Navigate to ResultPage with the picked image path
       _runModel(context, File(pickedImage.path));
     }
   }
@@ -100,30 +102,37 @@ class Home extends StatelessWidget {
       imageStd: 127.5,
     );
 
-    String label = ''; // Initialize label as empty
+    String label = '';
 
     if (output != null && output.isNotEmpty) {
-      label = output[0]['label']; // Get the label if result is found
+      label = output[0]['label'];
     }
+
+    // Convert label to int
+    int prediction = int.tryParse(label) ?? 0;
+
+    // Store prediction in Realtime Database
+    storePrediction(prediction);
+
     // Navigate to ResultPage with the inference result
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ResultPage(
-            label: label = label, imagePath: imageFile.path),
+        builder: (context) =>
+            ResultPage(prediction: prediction, imagePath: imageFile.path),
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:
-          const EdgeInsets.only(top: 20.0), // Adjust the top padding as needed
+      padding: const EdgeInsets.only(top: 20.0),
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               'Do they need water?',
               style: TextStyle(
                 fontSize: 24,
@@ -131,13 +140,13 @@ class Home extends StatelessWidget {
                 color: Color.fromARGB(255, 255, 255, 255),
               ),
             ),
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
             _buildButton(
               'Upload from Gallery',
               'assets/gallery.png',
               () => _openGallery(context),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             _buildButton(
               'Capture the Image',
               'assets/camera.png',
@@ -158,14 +167,14 @@ class Home extends StatelessWidget {
       width: 200,
       height: 200,
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 255, 255, 255),
+        color: const Color.fromARGB(255, 255, 255, 255),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Color.fromARGB(255, 162, 191, 154).withOpacity(0.5),
+            color: const Color.fromARGB(255, 162, 191, 154).withOpacity(0.5),
             spreadRadius: 4,
             blurRadius: 5,
-            offset: Offset(0, 3),
+            offset: const Offset(0, 3),
           ),
         ],
       ),
@@ -179,13 +188,13 @@ class Home extends StatelessWidget {
               width: 100,
               height: 100,
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
               buttonText,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: const Color.fromARGB(255, 0, 0, 0),
+                color: Color.fromARGB(255, 0, 0, 0),
               ),
             ),
           ],
@@ -193,4 +202,42 @@ class Home extends StatelessWidget {
       ),
     );
   }
+}
+
+void storePrediction(int prediction) {
+  DatabaseReference waterRef =
+      FirebaseDatabase.instance.reference().child('water');
+
+  // Define the water amount based on prediction
+  int waterAmount;
+  switch (prediction) {
+    case 1:
+      waterAmount = 200;
+      break;
+    case 2:
+      waterAmount = 230;
+      break;
+    case 3:
+      waterAmount = 250;
+      break;
+    case 4:
+      waterAmount = 300;
+      break;
+    case 5:
+      waterAmount = 400;
+      break;
+    case 6:
+      waterAmount = 450;
+      break;
+    default:
+      print('Invalid prediction');
+      return; // Exit the function if prediction is invalid
+  }
+
+  // Store the water amount in the Realtime Database
+  waterRef.child('amount').set(waterAmount).then((_) {
+    print('Water amount stored successfully');
+  }).catchError((error) {
+    print('Failed to store water amount: $error');
+  });
 }
