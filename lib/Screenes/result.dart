@@ -26,7 +26,7 @@ class _ResultPageState extends State<ResultPage> {
   String remainingWaterValue = 'Fetching...';
 
   late Timer _timer;
-  int _countdown = 5;
+  int _countdown = 10;
   bool _isDispensing = false;
 
   @override
