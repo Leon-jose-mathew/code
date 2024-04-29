@@ -85,7 +85,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),*/
                 SizedBox(height: 20),
                 Container(
-                  height: 50,
+                  height: 70,
                   decoration: BoxDecoration(
                     color: Colors.transparent,
                     borderRadius: BorderRadius.circular(10),
@@ -113,7 +113,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 SizedBox(height: 20),
                 Container(
-                  height: 50,
+                  height: 70,
                   decoration: BoxDecoration(
                     color: Colors.transparent,
                     borderRadius: BorderRadius.circular(10),
@@ -134,6 +134,9 @@ class _SignUpPageState extends State<SignUpPage> {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your email';
                         }
+                        if (!value.contains('@') || !value.contains('.')) {
+                          return 'Please enter a valid email address';
+                        }
                         return null;
                       },
                     ),
@@ -141,7 +144,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 SizedBox(height: 20),
                 Container(
-                  height: 50,
+                  height: 70,
                   decoration: BoxDecoration(
                     color: Colors.transparent,
                     borderRadius: BorderRadius.circular(10),
@@ -163,6 +166,9 @@ class _SignUpPageState extends State<SignUpPage> {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your password';
                         }
+                        if (value.length < 6) {
+                          return 'Password must be at least 6 characters';
+                        }
                         return null;
                       },
                     ),
@@ -170,7 +176,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 SizedBox(height: 20),
                 Container(
-                  height: 50,
+                  height: 70,
                   decoration: BoxDecoration(
                     color: Colors.transparent,
                     borderRadius: BorderRadius.circular(10),
@@ -189,6 +195,9 @@ class _SignUpPageState extends State<SignUpPage> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please re-enter your password';
+                        }
+                        if (value != _passwordController.text) {
+                          return 'Both passwords must be the same';
                         }
                         return null;
                       },

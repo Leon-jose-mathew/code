@@ -3,9 +3,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'signup.dart'; // Assuming the SignUpPage is in a file named signup.dart
 import 'Home.dart'; // Assuming the ProfilePage is in a file named profile.dart
 
-class SignInPage extends StatelessWidget {
+class SignInPage extends StatefulWidget {
+  @override
+  _SignInPageState createState() => _SignInPageState();
+}
+
+class _SignInPageState extends State<SignInPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _passwordVisible = false;
 
   Future<void> _signIn(BuildContext context) async {
     try {
@@ -100,14 +106,31 @@ class SignInPage extends StatelessWidget {
                       border: Border.all(color: Colors.white), // Border color
                       borderRadius: BorderRadius.circular(25),
                     ),
-                    child: TextField(
-                      controller: _passwordController,
-                      obscureText: true,
-                      style: TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 20),
-                      ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: _passwordController,
+                            obscureText: !_passwordVisible,
+                            style: TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            _passwordVisible ? Icons.visibility_off : Icons.visibility,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _passwordVisible = !_passwordVisible;
+                            });
+                          },
+                        ),
+                      ],
                     ),
                   ),
                   SizedBox(height: 20),

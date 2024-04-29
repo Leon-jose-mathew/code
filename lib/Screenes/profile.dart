@@ -39,65 +39,71 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Stack(
-        children: [
-          Positioned(
-            top: 96,
-            left: 16,
-            right: 16,
-            bottom: 16,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  'My Profile',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+    return WillPopScope(
+      onWillPop: () async {
+        // Disable back navigation
+        return false;
+      },
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: Stack(
+          children: [
+            Positioned(
+              top: 96,
+              left: 16,
+              right: 16,
+              bottom: 16,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    'My Profile',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 16.0),
-                _buildProfileCard(
-                  'Hello, $_userName!',
-                  'Email: $_userEmail',
-                  Icons.account_circle,
-                ),
-                SizedBox(height: 16.0),
-                _buildActionCard(
-                  'My Watering History',
-                  Icons.history,
-                  _handleWateringHistoryTap,
-                ),
-                SizedBox(height: 16.0),
-                _buildActionCard(
-                  'Log out',
-                  Icons.logout,
-                  _confirmLogout,
-                ),
-                SizedBox(height: 16.0),
-                _buildActionCard(
-                  'Help & Support',
-                  Icons.help,
-                  () {
-                    // Handle Help & Support button tap
-                  },
-                ),
-                SizedBox(height: 16.0),
-                _buildActionCard(
-                  'About App',
-                  Icons.info,
-                  () {
-                    // Handle About App button tap
-                  },
-                ),
-              ],
+                  SizedBox(height: 16.0),
+                  _buildProfileCard(
+                    'Hello, $_userName!',
+                    'Email: $_userEmail',
+                    Icons.account_circle,
+                  ),
+                  SizedBox(height: 16.0),
+                  _buildActionCard(
+                    'My Watering History',
+                    Icons.history,
+                    _handleWateringHistoryTap,
+                  ),
+                  SizedBox(height: 16.0),
+                  _buildActionCard(
+                    'Log out',
+                    Icons.logout,
+                    _confirmLogout,
+                  ),
+                  SizedBox(height: 16.0),
+                  _buildActionCard(
+                    'Help & Support',
+                    Icons.help,
+                    () {
+                      // Handle Help & Support button tap
+                    },
+                  ),
+                  SizedBox(height: 16.0),
+                  _buildActionCard(
+                    'About App',
+                    Icons.info,
+                    () {
+                      // Handle About App button tap
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -205,11 +211,12 @@ class _ProfilePageState extends State<ProfilePage> {
   void _logout(BuildContext context) async {
     try {
       await FirebaseAuth.instance.signOut();
-      Navigator.pushReplacement(
+      Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
           builder: (context) => SignInPage(),
         ),
+        (route) => false, // Remove all routes on stack
       );
     } catch (e) {
       print("Error signing out: $e");
