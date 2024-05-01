@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'login.dart'; // Import the Login.dart file
 import 'history.dart'; // Import the History.dart file
+import 'about.dart'; // Import the About.dart file
+import 'help.dart'; // Import the Help.dart file
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -87,17 +89,13 @@ class _ProfilePageState extends State<ProfilePage> {
                   _buildActionCard(
                     'Help & Support',
                     Icons.help,
-                    () {
-                      // Handle Help & Support button tap
-                    },
+                    _handleHelpSupportTap,
                   ),
                   SizedBox(height: 16.0),
                   _buildActionCard(
                     'About App',
                     Icons.info,
-                    () {
-                      // Handle About App button tap
-                    },
+                    _handleAboutAppTap,
                   ),
                 ],
               ),
@@ -153,7 +151,17 @@ class _ProfilePageState extends State<ProfilePage> {
       child: Padding(
         padding: EdgeInsets.all(16.0),
         child: TextButton(
-          onPressed: () => onPressed(context),
+          onPressed: () {
+            if (title == 'Help & Support') {
+              // Navigate to HelpPage if Help & Support button is tapped
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HelpPage()),
+              );
+            } else {
+              onPressed(context);
+            }
+          },
           child: Row(
             children: [
               Icon(
@@ -221,5 +229,20 @@ class _ProfilePageState extends State<ProfilePage> {
     } catch (e) {
       print("Error signing out: $e");
     }
+  }
+
+  void _handleAboutAppTap(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => AboutPage()),
+    );
+  }
+
+  void _handleHelpSupportTap(BuildContext context) {
+    // Handle Help & Support button tap
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => HelpPage()),
+    );
   }
 }
